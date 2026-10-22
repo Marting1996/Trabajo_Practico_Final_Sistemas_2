@@ -1,0 +1,41 @@
+<h1>Bienvenidos a Educación IT</h1>
+<hr />
+
+<h2>Listado de productos - Bienvenido {{usuario}}</h2>
+
+<hr />
+<a href="/api/v1/productos/create" class="btn btn-success">Crear Producto</a>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nombre</th>
+      <th scope="col">Categoría</th>
+      <th scope="col">Disponible</th>
+      <th scope="col">Stock</th>
+      <th scope="col">Precio</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {{#each productos}}
+
+      <tr>
+        <td scope="row">{{this.nombre}}</td>
+        <td>{{this.categoria}}</td>
+        <td>{{this.disponible}}</td>
+        <td>{{this.stock}}</td>
+        <td>{{this.precio}}</td>
+        <td>
+          <a class="btn btn-info" href="/api/v1/productos/{{this._id}}">Ver</a>
+          <button class="btn btn-warning">Editar</button>
+          <form class="d-inline" method="POST" action="/api/v1/productos/{{this._id}}?_method=DELETE">
+            <button class="btn btn-danger">Borrar</button>
+          </form>
+        </td>
+      </tr>
+
+    {{/each}}
+  </tbody>
+</table>

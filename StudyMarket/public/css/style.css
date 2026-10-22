@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+body{
+    background: linear-gradient(to top, rgba(44, 213, 159, 0.2), rgba(255, 255, 255, 0.2));
+    background-repeat: no-repeat;
+    font-family: 'Urbanist';
+    color: #05042C;
+}
+div{
+    background-color: #F8F8F8;
+}

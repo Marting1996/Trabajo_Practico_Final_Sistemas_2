@@ -1,0 +1,35 @@
+<h1>Registro</h1>
+
+<form action="/api/usuarios/register" method="POST" class="border border-success p-5 w-50 m-auto">
+
+    {{!-- Campo nombre --}}
+    <div class="mb-3">
+        <label for="lbl-nombre" class="form-label">Nombre</label>
+        <input type="text" class="form-control" id="lbl-nombre" name="name" placeholder="Ingrese su nombre">
+    </div>
+
+    {{!-- Campo correo --}}
+    <div class="mb-3">
+        <label for="lbl-correo" class="form-label">Correo electrónico</label>
+        <input type="text" class="form-control" id="lbl-correo" name="email" placeholder="Ingrese su correo">
+    </div>
+
+    {{!-- Campo password --}}
+     <div class="mb-3">
+        <label for="lbl-password" class="form-label">Contraseña</label>
+        <input type="text" class="form-control" id="lbl-password" name="password" placeholder="Ingrese su contraseña">
+    </div>
+
+    {{!-- Campo Reingresar Password --}}
+     <div class="mb-3">
+        <label for="lbl-confirm-password" class="form-label">Reingrese su contraseña</label>
+        <input type="text" class="form-control" id="lbl-confirm-password" name="confirm_password" placeholder="Ingrese su confirmacón de contraseña">
+    </div>
+
+    {{!-- Botón de envío --}}
+    <button class="btn btn-success">
+        Registro
+    </button>
+
+
+</form>

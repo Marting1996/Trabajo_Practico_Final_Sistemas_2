@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css" title>Iniciar Sesion</title>
+</head>
+
+<body>
+    <header>
+        <div>
+            <img src="" alt="logo de studymarket">
+        </div>
+        <div class="nav-opciones">
+            <ul>
+                <li><a href="./">Inicio</a></li>
+                <li><a href="/perfil">Mi perfil</a></li>
+                <li><a href="#">Notificaciones</a></li>
+                <li><a href="#">Mis publicaciones</a></li>
+                <li><a href="/carrito.html">Mis compras</a></li>
+                <li><a href="#">TIPS</a></li>
+                <li><a href="/sobreNosotros.html">Sobre nosotros</a></li>
+            </ul>
+        </div>
+        <div class="nav-search">
+            🔍
+        </div>
+        <div class="nav-carrito">
+            🛒
+        </div>
+    </header>
+
+    <h1>¡Hola! Registrate para empezar</h1>
+    <img src="ruta-de-la-imagen.jpg" alt="logo de StudyMarket">
+    <form action="" id="formularioRegistro">
+        <!-- Campo Nombre -->
+        <div class="campoNombre">
+            <label for="lbl-nombre">Nombre</label>
+            <input type="text" name="nombre" id="lbl-nombre" placeholder="Ingrese su nombre" required >
+            <span data-error="nombre-error"></span>
+        </div>
+        <!-- Campo Apellido -->
+        <div class="campoApellido">
+            <label for="lbl-apellido">Apellido</label>
+            <input type="text" name="apellido" id="lbl-apellido" placeholder="Ingrese su apellido" required>
+            <span data-error="apellido-error"></span>
+        </div>
+        <!-- Campo Email -->
+        <div class="campoEmail">
+            <label for="lbl-email">Correo</label>
+            <input type="email" placeholder="Ingrese su correo" name="email" id="lbl-email" required>
+            <span data-error="email-error"></span>
+        </div>
+        <!-- Campo Password -->
+        <div class="campoPassword">
+            <label for="lbl-password">Contraseña</label>
+            <input type="password" placeholder="Contraseña" name="password" id="lbl-password">
+        </div>
+        <!-- Campo Reingresar password -->
+        <div class="campoPassword2">
+            <label for="lbl-password2">Ingrese nuevamente contraseña</label>
+            <input type="password2" placeholder="Ingrese nuevamente su contraseña" name="password2" id="lbl-password2">
+        </div>
+
+        <button type="submit">Registrarse</button>
+        <span>O registrarse con</span>
+        <div class="vinculos">
+            <a href="#">Registrar con Google</a>
+            <a href="#">Registrar con Facebook</a>
+            <a href="#">Registrar con Twitter</a>
+            <span>¿Ya tienes cuenta? <a href="#"></a>Ingresar ahora</span>
+        </div>
+    </form>
+
+    <footer>
+        <div class="icono-footer">
+            📖© ​ STUDYMARKET - 2024
+            Todos los derechos reservados.
+        </div>
+        <div class="navegacion-footer">
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/perfil">Perfil</a></li>
+                <li><a href="#">Tienda</a></li>
+                <li><a href="/cargarApunte">Subir Material</a></li>
+                <li><a href="/sobreNosotros">Sobre Nosotros</a></li>
+                <li><a href="#">Politicas y terminos</a></li>
+                <li><a href="/carrito">Carrito</a></li>
+            </ul>
+        </div>
+        <div class="documentos-footer">
+            <ul>
+                <li><a href="#">Resúmenes</a></li>
+                <li><a href="#">Ejercicios</a></li>
+                <li><a href="#">Exámenes</a></li>
+                <li><a href="#">Apuntes</a></li>
+                <li><a href="#">Esquemas</a></li>
+                <li><a href="#">Documentos en venta</a></li>
+            </ul>
+        </div>
+        <div class="contacto-footer">
+            <a href="mailto:contacto@studymarket.com">contacto@studymarket.com</a>
+        </div>
+
+    </footer>
+    <script type="module" src="js/registrarseform.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
