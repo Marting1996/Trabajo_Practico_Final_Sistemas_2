@@ -102,3 +102,44 @@ describe("POST/api/usuarios/login", () => {
     expect(respuesta.body.usuario).toEqual(false);
   });
 });
+
+describe("GET/usuarios/perfil", () => {
+  test("responde 200 y devuelve el usuario con el nombre y el email", async () => {
+    // Arrange: el servidor tiene que estar corriendo (npm run dev) y además lo siguiente
+
+    const email = `prueba${Date.now()}@example.com`;
+
+    const nuevoUsuario =   {
+        "name": "Juan",
+        "email": email,
+        "password": "1234",
+        "confirm_password": "1234"
+    }
+
+    const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
+    expect(primerRegistro.status).toBe(200);
+
+    const login = await request(API).post("/usuarios/login").send({ email: email, password: nuevoUsuario.password });
+    const token = login.body.token;
+
+    // Act: mandar el pedido
+    const respuesta = await request(API).get("/usuarios/perfil").set("Cookie", "jwt=" + token);
+
+    // Assert: comprobar el resultado
+    expect(respuesta.status).toBe(200);
+    expect(respuesta.body.usuario.nombre).toBe(nuevoUsuario.name);
+    expect(respuesta.body.usuario.email).toBe(email);
+  });
+
+  test("responde 401 y devuelve un mensaje de no autorizado", async () => {
+    // Arrange: solo el servidor corriendo. No hay usuario ni login: se prueba el acceso sin token.
+
+    // Act: mandar el pedido
+    const respuesta = await request(API).get("/usuarios/perfil");
+
+    // Assert: comprobar el resultado
+    expect(respuesta.status).toBe(401);
+    expect(respuesta.body.mensaje).toEqual("No autorizado")
+
+  });
+});
