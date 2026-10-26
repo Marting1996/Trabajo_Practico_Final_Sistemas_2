@@ -50,5 +50,31 @@ describe("POST/api/usuarios/register", () => {
   });
 });
 
+describe("POST/api/usuarios/login", () => {
+  test("responde 200 y devuelve el usuario completo y el token", async () => {
+    // Arrange: el servidor tiene que estar corriendo (npm run dev) y además lo siguiente
 
+    const email = `prueba${Date.now()}@example.com`;
 
+    const nuevoUsuario =   {
+        "name": "Juan",
+        "email": email,
+        "password": "1234",
+        "confirm_password": "1234"
+    }
+
+    const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
+    expect(primerRegistro.status).toBe(200);
+
+    // Act: mandar el pedido
+    const respuesta = await request(API).post("/usuarios/login").send({email: email, password: nuevoUsuario.password});
+
+    // Assert: comprobar el resultado
+    expect(respuesta.status).toBe(200);
+    expect(respuesta.body.usuario).toHaveProperty("_id");
+    expect(respuesta.body.usuario.email).toBe(email);
+    expect(respuesta.body.usuario.name).toBe(nuevoUsuario.name);
+    expect(respuesta.body.usuario.password).not.toBe(nuevoUsuario.password);
+    expect(respuesta.body).toHaveProperty("token");
+  });
+});
