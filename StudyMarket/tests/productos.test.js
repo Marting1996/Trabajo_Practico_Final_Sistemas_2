@@ -1,6 +1,6 @@
 import request from "supertest";
 
-const API = "http://localhost:8888/api";
+const API = "http://127.0.0.1:8888/api";
 
 describe("GET /api/productos", () => {
   test("responde 200 y devuelve una lista", async () => {
