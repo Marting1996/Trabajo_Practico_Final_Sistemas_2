@@ -56,93 +56,62 @@ const getUserByEmail = async (req, res) => {
 };
 
 //!REGISTER
-const createUser = async (req, res) => {
-  const usuario = req.body;
- // console.log('[createUser]', usuario);
-  
-
-  const { name, email, password, confirm_password } = usuario;
+// Clean Code & SRP: separo la responsabilidad de validación en su propia función
+const validarDatosRegistro = (name, email, password, confirm_password) => {
   const errores = [];
+  if (!name || !email || !password || !confirm_password) {
+    errores.push({ mensaje: "Todos los campos son obligatorios" });
+  }
+  if (name && name.trim().length < 2) {
+    errores.push({ mensaje: "El nombre debe tener al menos 2 caracteres" });
+  }
+  if (name && !/^[a-zA-Z\s]+$/.test(name)) {
+    errores.push({ mensaje: "El nombre solo puede contener letras y espacios" });
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errores.push({ mensaje: "El correo electrónico no es válido" });
+  }
+  if (password !== confirm_password) {
+    errores.push({ mensaje: "Las contraseñas no coinciden" });
+  }
+  return errores;
+};
+
+//!REGISTER - Controlador con Responsabilidad Única (SRP)
+const createUser = async (req, res) => {
   try {
-    // Validadores
-    if (!name || !email || !password || !confirm_password) {
-      errores.push({ mensaje: "Todos los campos son obligatorios" });
-    }
-
-    if (!name || name.trim().length < 2) {
-      errores.push({ mensaje: "El nombre debe tener al menos 2 caracteres" });
-    }
-
-    const nameRegex = /^[a-zA-Z\s]+$/;
-
-    if (!nameRegex.test(name)) {
-      errores.push({
-        mensaje: "El nombre solo puede contener letras y espacios",
-      });
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      errores.push({ mensaje: "El correo electrónico no es válido" });
-    }
- 
-    if (password !== confirm_password) {
-      errores.push({ mensaje: "Las contraseñas no coinciden" });
-    } 
-    //! Validaciones de contraseña para usar en la version final
-    /* const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
-    if (!passwordRegex.test(password)) {
-      errores.push({
-        mensaje:
-          "La contraseña debe tener al menos 8 caracteres, incluyendo una mayúscula, una minúscula, un número y un carácter especial",
-      });
-    } */
-
-    /* const weakPasswords = ["123456", "password", "qwerty", "admin"];
-
-    if (weakPasswords.includes(password)) {
-      errores.push({
-        mensaje: "La contraseña es demasiado común, elige una más segura",
-      });
-    } */
-    /* if (password.length > 30) {
-      errores.push({
-        mensaje: "La contraseña no puede tener más de 30 caracteres",
-      });
-    } */
-    const usuarioEncontrado = await modelUsuarios.obtenerUsuarioPorEmail(email);
-
-    if (usuarioEncontrado) {
-      errores.push({ mensaje: "Ya existe un usuario con este correo" });
-    }
-
-    if (errores.length > 0) {
-      return res.status(400).json(errores);
-    }
-
-    // Crear usuarios
+    const { name, email, password, confirm_password } = req.body;
     
-    const usuarioCreado = await modelUsuarios.crearUsuario(usuario);
-    //console.log('[createUser]', usuarioCreado);
+    // 1. delego la validación
+    const erroresDeValidacion = validarDatosRegistro(name, email, password, confirm_password);
+    if (erroresDeValidacion.length > 0) {
+      return res.status(400).json(erroresDeValidacion);
+    }
 
-    //Crear carrito
-    const carritoCreado = await modelCarrito.crearCarrito({  usuario: usuarioCreado._id })
-    usuarioCreado.carrito = carritoCreado._id
-    await usuarioCreado.save()
+    // 2. verifico duplicados
+    const usuarioExistente = await modelUsuarios.obtenerUsuarioPorEmail(email);
+    if (usuarioExistente) {
+      return res.status(400).json([{ mensaje: "Ya existe un usuario con este correo" }]);
+    }
 
-    const objRespuesta = {
-      name: usuarioCreado.name,
-      email: usuarioCreado.email,
-      id: usuarioCreado._id,
+    // 3. creo entidades
+    const nuevoUsuario = await modelUsuarios.crearUsuario(req.body);
+    const nuevoCarrito = await modelCarrito.crearCarrito({ usuario: nuevoUsuario._id });
+    
+    nuevoUsuario.carrito = nuevoCarrito._id;
+    await nuevoUsuario.save();
+
+    // 4. Formateo respuesta (Clean Code: variables descriptivas)
+    const respuestaAlCliente = {
+      id: nuevoUsuario._id,
+      name: nuevoUsuario.name,
+      email: nuevoUsuario.email,
     };
 
-    res.json(objRespuesta);
-  } catch (error) {
-    console.log(error);
-
-    res.status(500).json({ mensaje: "No se pudo registrar el usuario" });
+    return res.status(201).json(respuestaAlCliente);
+  } catch (errorDelServidor) {
+    console.error("[createUser] Error:", errorDelServidor);
+    return res.status(500).json({ mensaje: "No se pudo registrar el usuario por un error interno" });
   }
 };
 
