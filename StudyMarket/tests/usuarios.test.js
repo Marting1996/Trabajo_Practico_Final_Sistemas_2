@@ -77,4 +77,28 @@ describe("POST/api/usuarios/login", () => {
     expect(respuesta.body.usuario.password).not.toBe(nuevoUsuario.password);
     expect(respuesta.body).toHaveProperty("token");
   });
+
+  test("responde 400 y devuelve un mensaje de error en el login", async () => {
+    // Arrange: el servidor tiene que estar corriendo (npm run dev) y además lo siguiente
+
+    const email = `prueba${Date.now()}@example.com`;
+
+    const nuevoUsuario =   {
+        "name": "Juan",
+        "email": email,
+        "password": "1234",
+        "confirm_password": "1234"
+    }
+
+    const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
+    expect(primerRegistro.status).toBe(200);
+
+    // Act: mandar el pedido
+    const respuesta = await request(API).post("/usuarios/login").send({email: email, password:"1111"});
+
+    // Assert: comprobar el resultado
+    expect(respuesta.status).toBe(400);
+    expect(respuesta.body.mensaje).toEqual("Error en el login")
+    expect(respuesta.body.usuario).toEqual(false);
+  });
 });
