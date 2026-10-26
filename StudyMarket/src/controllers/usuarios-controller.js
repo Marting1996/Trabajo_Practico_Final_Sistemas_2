@@ -211,7 +211,7 @@ const perfil = (req, res) => {
 
 
 //!EDIT
-const editUsuatio = (req, res) => {
+const editUsuario = (req, res) => {
   const id = Number(req.params.id);
   const usuarioPorEditar = req.body;
 
@@ -246,33 +246,36 @@ const eliminarUsuario = (req, res) => {
 };
 
 //!RESET PASS
+//!RESET PASS
 const enviarMailRecuperacion = async (req, res) => {
   try {
-    const {email} = req.body
-    const usuario = await modelUsuarios.obtenerUsuarioPorEmail(email)
-    //console.log('[enviarMailRecuperacion] usuario:', usuario);
+    const { email } = req.body;
+    const usuarioEncontrado = await modelUsuarios.obtenerUsuarioPorEmail(email);
     
-    if(!usuario) {
-      console.log('[enviarMailRecuperacion] error:', error);
-      throw error
+    // Clean Code: Validamos y respondemos ordenadamente si no existe, sin romper la app.
+    if(!usuarioEncontrado) {
+      return res.status(404).json({ mensaje: 'No se encontró un usuario con ese correo electrónico' });
     }
 
-    const token = crypto.randomBytes(20).toString('hex')
-    usuario.resetPasswordToken = token
-    usuario.resetPasswordExpires = Date.now() + 1000 * 60 * 60
-    await usuario.save()
+    const tokenRecuperacion = crypto.randomBytes(20).toString('hex');
+    usuarioEncontrado.resetPasswordToken = tokenRecuperacion;
+    // 3600000 ms = 1 hora (evitamos la multiplicación manual 'mágica' en línea)
+    usuarioEncontrado.resetPasswordExpires = Date.now() + 3600000; 
+    await usuarioEncontrado.save();
 
     const mailOptions = {
-      to: usuario.email,
+      to: usuarioEncontrado.email,
       from: process.env.EMAIL_USER,
-      subject: 'Recuperacion de contraseña',
-      text: `Por favor, haz click en el siguiente enlace para recuperar tu contraseña \n\n http://localhost:8080/reset/${token} \n\n`
-    }
-    await transporter.sendMail(mailOptions)
-    res.status(200).json({mensaje: 'Email enviado'})
-  } catch (error) {
-    console.log('[enviarMailRecuperacion]', error);
-    throw error
+      subject: 'Recuperación de contraseña',
+      text: `Por favor, haz click en el siguiente enlace para recuperar tu contraseña: \n\n http://localhost:8080/reset/${tokenRecuperacion} \n\n`
+    };
+    
+    await transporter.sendMail(mailOptions);
+    return res.status(200).json({ mensaje: 'Correo de recuperación enviado con éxito' });
+
+  } catch (errorDelServidor) {
+    // Manejo de error claro y estandarizado
+    return res.status(500).json({ mensaje: 'Ocurrió un error interno al intentar enviar el correo', error: errorDelServidor.message });
   }
 }
 
@@ -297,7 +300,7 @@ export default {
   getUserByEmail,
   getUserById,
   createUser,
-  editUsuatio,
+  editUsuario,
   eliminarUsuario,
   formularioRegistro,
   login,
