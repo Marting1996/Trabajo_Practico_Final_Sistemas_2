@@ -15,7 +15,7 @@ const getAll = async (req, res) => {
 //! GET ONE
 const getOne = async (req, res) => {
   try {
-    const id = Number(req.params.id);
+    const id = req.params.id;
     const carrito = await modelCarrito.obtenerCarritoPorId(id);
 
     // Clean Code: Cláusula de guarda (Guard Clause) para salir rápido si no existe
