@@ -179,26 +179,29 @@ const perfil = (req, res) => {
 
 
 
-//!EDIT
-const editUsuario = (req, res) => {
-  const id = Number(req.params.id);
-  const usuarioPorEditar = req.body;
+const editUsuario = async (req, res) => { 
+  try {
+    const id = req.params.id; // Clean Code: Saco el Number() para evitar que rompa el ID en MongoDB
+    const usuarioPorEditar = req.body;
 
-  const index = modelUsuarios.obteneterLaPosicionDelUsuario(id);
+    const index = modelUsuarios.obteneterLaPosicionDelUsuario(id);
 
-  if (index >= 0) {
-    const usuarioActualizado = modelUsuarios.actualizarUsuario(
-      index,
-      id,
-      usuarioPorEditar,
-    );
-    res.json(usuarioActualizado);
-    console.log("Usuario actualizado correctamente");
-  } else {
-    res.status(404).json({ mensaje: " No se encontro el usuario" });
+    if (index >= 0) {
+      const usuarioActualizado = modelUsuarios.actualizarUsuario(
+        index,
+        id,
+        usuarioPorEditar
+      );
+      // Clean Code: Saco el console.log y agregamos return
+      return res.status(200).json(usuarioActualizado);
+    } else {
+      return res.status(404).json({ mensaje: "No se encontró el usuario" });
+    }
+  } catch (errorDelServidor) {
+    // Clean Code: Manejo de errores defensivo (try/catch) para que no se caiga la app
+    return res.status(500).json({ mensaje: "Error interno al intentar editar el usuario" });
   }
 };
-
 //!REMOVE
 const eliminarUsuario = (req, res) => {
   const id = Number(req.params.id);
