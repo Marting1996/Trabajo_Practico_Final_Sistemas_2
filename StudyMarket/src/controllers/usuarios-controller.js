@@ -5,7 +5,6 @@ import modelUsuarios from "../models/usuarios-models.js";
 import modelCarrito from "../models/carrito-models.js"
 import transporter from "../config/email.js";
 import "dotenv/config";
-import * as passportStrategyJwt from "../utils/handle-jwt.js";
 
 const formularioRegistro = (req, res) => {
   res.render("usuarios/register");
@@ -180,22 +179,6 @@ const login = async (req, res) => {
   }); */
 
 //!PERFIL
-const autorizado = (req, res, next) => {
-  passport.authenticate("jwt", { session: false }, (err, user, info) => {
-    if (err) {
-      console.error("Error en la autenticación:", err);
-      return res.status(500).json({ mensaje: "Error interno del servidor" });
-    }
-
-    if (!user) {
-      console.log("Información de autenticación:", info);
-      return res.status(401).json({ mensaje: "No autorizado" });
-    }
-
-    req.user = user;  // Asegúrate de que el usuario se establece en req
-    next();
-  })(req, res, next);
-};
 
 const perfil = (req, res) => {
   const usuario = req.user;
@@ -302,7 +285,6 @@ export default {
   formularioRegistro,
   login,
   //logout,
-  autorizado,
   perfil,
   formularioLogeo,
   enviarMailRecuperacion,
