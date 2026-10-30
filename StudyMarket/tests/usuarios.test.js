@@ -3,7 +3,7 @@ import request from "supertest";
 const API = "http://127.0.0.1:8888/api";
 
 describe("POST/api/usuarios/register", () => {
-  test("responde 200 y el nombre, e-mail y id con cuerpo", async () => {
+  test("responde 201 y el nombre, e-mail y id con cuerpo", async () => {
     // Arrange: el servidor tiene que estar corriendo (npm run dev) y además lo siguiente
 
     const email = `prueba${Date.now()}@example.com`;
@@ -19,7 +19,7 @@ describe("POST/api/usuarios/register", () => {
     const respuesta = await request(API).post("/usuarios/register").send(nuevoUsuario);
 
     // Assert: comprobar el resultado
-    expect(respuesta.status).toBe(200);
+    expect(respuesta.status).toBe(201);
     expect(respuesta.body).toHaveProperty("id");
     expect(respuesta.body.email).toBe(email);
     expect(respuesta.body.name).toBe(nuevoUsuario.name);
@@ -39,7 +39,7 @@ describe("POST/api/usuarios/register", () => {
     }
 
     const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
-    expect(primerRegistro.status).toBe(200);
+    expect(primerRegistro.status).toBe(201);
 
     // Act: mandar el pedido
     const respuesta = await request(API).post("/usuarios/register").send(nuevoUsuario);
@@ -64,7 +64,7 @@ describe("POST/api/usuarios/login", () => {
     }
 
     const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
-    expect(primerRegistro.status).toBe(200);
+    expect(primerRegistro.status).toBe(201);
 
     // Act: mandar el pedido
     const respuesta = await request(API).post("/usuarios/login").send({email: email, password: nuevoUsuario.password});
@@ -91,7 +91,7 @@ describe("POST/api/usuarios/login", () => {
     }
 
     const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
-    expect(primerRegistro.status).toBe(200);
+    expect(primerRegistro.status).toBe(201);
 
     // Act: mandar el pedido
     const respuesta = await request(API).post("/usuarios/login").send({email: email, password:"1111"});
@@ -117,7 +117,7 @@ describe("GET/usuarios/perfil", () => {
     }
 
     const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
-    expect(primerRegistro.status).toBe(200);
+    expect(primerRegistro.status).toBe(201);
 
     const login = await request(API).post("/usuarios/login").send({ email: email, password: nuevoUsuario.password });
     const token = login.body.token;
