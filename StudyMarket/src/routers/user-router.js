@@ -1,5 +1,7 @@
 import express from 'express'
 import controladorUsuarios from '../controllers/usuarios-controller.js'
+import autorizado from '../middlewares/auth-middleware.js'
+
 
 const routerUsuarios = express.Router()
 
@@ -15,7 +17,7 @@ routerUsuarios.get("/login", controladorUsuarios.formularioLogeo)
 routerUsuarios.post("/login", controladorUsuarios.login)
 
 //!PERFIL
-routerUsuarios.get("/perfil", controladorUsuarios.autorizado, controladorUsuarios.perfil)
+routerUsuarios.get("/perfil", autorizado, controladorUsuarios.perfil)
 
 //!READ ONE BY EMAIL
 routerUsuarios.get('/email/:email', controladorUsuarios.getUserByEmail) 
