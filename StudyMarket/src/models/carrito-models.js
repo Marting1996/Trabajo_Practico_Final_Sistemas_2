@@ -44,8 +44,11 @@ const calcularPrecioCarrito = (productos) => {
     return precioTotal
 }
 
-const addProductToCart = async (cid, pid, cantidad) => {
+const addProductToCart = async (datosAgregado) => {
     try {
+
+        const { cid, pid, cantidad } = datosAgregado
+        
         const producto = await modelProductos.obtenerProductosPorId(pid)
         
         if(!producto) {
