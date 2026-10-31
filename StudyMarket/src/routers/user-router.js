@@ -26,7 +26,7 @@ routerUsuarios.get('/email/:email', controladorUsuarios.getUserByEmail)
 routerUsuarios.get('/getone/:id', controladorUsuarios.getUserById)
 
 //!UPDATE
-routerUsuarios.put('/update/:id', controladorUsuarios.editUsuatio)
+routerUsuarios.put('/update/:id', controladorUsuarios.editUsuario)
 
 //!DELETE
 routerUsuarios.delete('/delete/:id', controladorUsuarios.eliminarUsuario)
