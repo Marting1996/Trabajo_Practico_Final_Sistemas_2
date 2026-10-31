@@ -17,7 +17,7 @@ describe("POST /api/carritos/add-product", () => {
     }
 
     const primerRegistro = await request(API).post("/usuarios/register").send(nuevoUsuario);
-    expect(primerRegistro.status).toBe(200);
+    expect(primerRegistro.status).toBe(201);
 
     const login = await request(API).post("/usuarios/login").send({ email: email, password: nuevoUsuario.password });
     const token = login.body.token;
