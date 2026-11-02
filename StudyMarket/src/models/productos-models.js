@@ -28,15 +28,6 @@ const obtenerProductosPorId = async (pid) => {
    }
  };
 
-const obtenerLaPosicionDelProducto = (pid) => {
-   try {
-      const producto = producto.find((prod) => prod.pid === pid)
-      return producto
-   } catch (error) {
-      console.log("[obtenerProductosPorId]", error);
-   }
-};
-
 const crearProducto =  async (producto) => {
    try {
       const productoCreado = new ProductoModelo(producto)
@@ -76,7 +67,6 @@ const eliminarProducto = async (pid) => {
 export default {
    obtenerTodosLosProductos,
    obtenerProductosPorId,
-   obtenerLaPosicionDelProducto,
    crearProducto,
    actualizarProducto,
    eliminarProducto,

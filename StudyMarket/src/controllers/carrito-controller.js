@@ -38,7 +38,8 @@ const addProductToCartController = async (req, res) => {
         return res.status(400).json({ mensaje: 'El ID del producto y la cantidad son requeridos' });
        }
        
-       const carritoActualizado = await modelCarrito.addProductToCart(cid, pid, cantidad);
+       const datosAgregado = { cid, pid, cantidad };
+       const carritoActualizado = await modelCarrito.addProductToCart(datosAgregado);
        return res.status(200).json(carritoActualizado);
        
     } catch (errorDelServidor) {

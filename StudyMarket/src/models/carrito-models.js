@@ -36,8 +36,19 @@ const crearCarrito = async (carrito) => {
     }
 }
 
-const addProductToCart = async (cid, pid, cantidad) => {
+const calcularPrecioCarrito = (productos) => {
+    const precioTotal = productos.reduce((total, item) => {
+        return total + item.cantidad * item.precio
+    }, 0);
+
+    return precioTotal
+}
+
+const addProductToCart = async (datosAgregado) => {
     try {
+
+        const { cid, pid, cantidad } = datosAgregado
+        
         const producto = await modelProductos.obtenerProductosPorId(pid)
         
         if(!producto) {
@@ -60,9 +71,8 @@ const addProductToCart = async (cid, pid, cantidad) => {
         // Calcular precio total
         console.log('[addProductToCart] precio total:', carrito.precioTotal);
         
-        carrito.precioTotal =  carrito.productos.reduce((total, item) => {
-            return total + item.cantidad * item.precio
-        }, 0)
+        carrito.precioTotal = calcularPrecioCarrito(carrito.productos);
+
         console.log('[addProductToCart] precio total:', carrito.precioTotal);
 
         await carrito.save()
