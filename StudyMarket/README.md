@@ -1,6 +1,6 @@
 # StudyMarket
 
-Descripción: StudyMarket es un marketplace para estudiantes: permite publicar, buscar y comprar material de estudio (apuntes y libros). Los usuarios se registran, inician sesión, publican productos y arman un carrito de compras.
+StudyMarket es un marketplace para estudiantes: permite publicar, buscar y comprar material de estudio (apuntes y libros). Los usuarios se registran, inician sesión, publican productos y arman un carrito de compras.
 El sistema viene de un proyecto previo. Se eligió porque cumple con los requisitos del TPI y porque su versión inicial tiene problemas reales de diseño e implementación que se pueden diagnosticar.
 
 Este repositorio es el Trabajo Práctico Integrador de Metodología de Sistemas II (UTN). Contiene el sistema base (tag `estado-inicial`) y su versión refactorizada (tag `estado-refactorizado`).
