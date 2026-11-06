@@ -34,3 +34,19 @@ Cookie: PEGAR_ACA_EL_TOKEN
 # Observado (estado inicial): la cookie jwt tiene la marca Secure y REST Client
 # no la envía por http. Hay que mandarla a mano con el encabezado Cookie.
 # Con token: 200 y devuelve nombre y email. Sin token: 401 No autorizado.
+### Listar carritos (para sacar un id real)
+GET {{baseUrl}}/carritos
+
+### Ver un carrito por id (reemplazar PEGAR_ID_ACA)
+GET {{baseUrl}}/carritos/6ae4809871a7b63712fcb5c9
+
+### Ver un carrito con un id válido que no existe
+GET {{baseUrl}}/carritos/000000000000000000000000
+
+### Recuperar contraseña con un email que no existe
+POST {{baseUrl}}/usuarios/forgot
+Content-Type: application/json
+
+{
+  "email": "noexiste@example.com"
+}
